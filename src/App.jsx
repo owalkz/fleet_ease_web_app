@@ -17,6 +17,13 @@ import RegisterPage from "./pages/RegisterPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import EditProfilePage from "./pages/EditProfilePage";
 import ViewProfilePage from "./pages/ViewProfilePage";
+import DashboardLayout from "./layouts/DashboardLayout";
+import TripsPage from "./pages/TripsPage";
+import DriversPage from "./pages/DriversPage";
+import VehiclesPage from "./pages/VehiclesPage";
+import ReportsPage from "./pages/ReportsPage";
+import SettingsPage from "./pages/SettingsPage";
+import TripDetailsPage from "./pages/TripDetailsPage";
 
 const App = () => {
   const router = createBrowserRouter(
@@ -32,9 +39,18 @@ const App = () => {
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
           <Route element={<PrivateRoute />}>
-              <Route path="/view-profile" element={<ViewProfilePage />} />
-              <Route path="/edit-profile" element={<EditProfilePage />} />
+            <Route path="/view-profile" element={<ViewProfilePage />} />
+            <Route path="/edit-profile" element={<EditProfilePage />} />
+
+            <Route path="/dashboard" element={<DashboardLayout />}>
+              <Route path="trips" element={<TripsPage />} />
+              <Route path="drivers" element={<DriversPage />} />
+              <Route path="vehicles" element={<VehiclesPage />} />
+              <Route path="reports" element={<ReportsPage />} />
+              <Route path="settings" element={<SettingsPage />} />
+              <Route path="trip/:tripId" element={<TripDetailsPage />} />
             </Route>
+          </Route>
         </Route>
       </>
     )
