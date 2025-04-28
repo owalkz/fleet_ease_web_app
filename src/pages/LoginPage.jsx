@@ -22,7 +22,7 @@ const LoginPage = () => {
     const response = await auth.loginUser(loginDetails);
     if (response == 200) {
       toast.success("Login Successful");
-      navigate("/");
+      navigate("/dashboard");
     } else {
       toast.error("Invalid Credentials Entered. Please Try Again");
     }

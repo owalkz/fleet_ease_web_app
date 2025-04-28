@@ -10,7 +10,7 @@ const AuthProvider = ({ children }) => {
   const registerUser = async (userData) => {
     const res = await fetch(
       import.meta.env.VITE_APP_ENVIRONMENT === "development"
-        ? "/api/api/auth/register"
+        ? "/api/auth/register"
         : `${import.meta.env.VITE_APP_BACKEND_URL}/api/auth/register`,
       {
         method: "POST",
@@ -27,7 +27,7 @@ const AuthProvider = ({ children }) => {
     try {
       const response = await fetch(
         import.meta.env.VITE_APP_ENVIRONMENT === "development"
-          ? "/api/api/auth/login"
+          ? "/api/auth/login"
           : `${import.meta.env.VITE_APP_BACKEND_URL}/api/auth/login`,
         {
           method: "POST",
@@ -54,7 +54,7 @@ const AuthProvider = ({ children }) => {
   const forgotPassword = async (userData) => {
     const res = await fetch(
       import.meta.env.VITE_APP_ENVIRONMENT === "development"
-        ? "/api/api/auth/forgot-password"
+        ? "/api/auth/forgot-password"
         : `${import.meta.env.VITE_APP_BACKEND_URL}/api/auth/forgot-password`,
       {
         method: "POST",
@@ -70,7 +70,7 @@ const AuthProvider = ({ children }) => {
   const resetPassword = async (userData, token) => {
     const res = await fetch(
       import.meta.env.VITE_APP_ENVIRONMENT === "development"
-        ? `/api/api/auth/reset-password/${token}`
+        ? `/api/auth/reset-password/${token}`
         : `${
             import.meta.env.VITE_APP_BACKEND_URL
           }/api/auth/reset-password/${token}`,
@@ -96,7 +96,7 @@ const AuthProvider = ({ children }) => {
   const getUserProfile = async () => {
     const res = await fetch(
       import.meta.env.VITE_APP_ENVIRONMENT === "development"
-        ? "/api/api/users/get-profile"
+        ? "/api/users/get-profile"
         : `${import.meta.env.VITE_APP_BACKEND_URL}/api/users/get-profile`,
       {
         method: "GET",
@@ -113,7 +113,7 @@ const AuthProvider = ({ children }) => {
   const editUserProfile = async (userData) => {
     const res = await fetch(
       import.meta.env.VITE_APP_ENVIRONMENT === "development"
-        ? "/api/api/users/edit-profile"
+        ? "/api/users/edit-profile"
         : `${import.meta.env.VITE_APP_BACKEND_URL}/api/users/edit-profile`,
       {
         method: "POST",
