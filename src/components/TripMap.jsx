@@ -62,7 +62,25 @@ const TripMap = ({ trip }) => {
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
         {/* Animated Route */}
-        <Polyline positions={animatedPath} color="blue" weight={4} />
+        {animatedPath.length > 1 &&
+          animatedPath.slice(1).map((point, idx) => {
+            const prevPoint = animatedPath[idx];
+            const currPoint = point;
+            const speed = trip.speedLogs[idx + 1]?.speed || 0;
+
+            let color = "green";
+            if (speed >= 80) color = "red";
+            else if (speed >= 40) color = "yellow";
+
+            return (
+              <Polyline
+                key={`segment-${idx}`}
+                positions={[prevPoint, currPoint]}
+                color={color}
+                weight={4}
+              />
+            );
+          })}
 
         {/* Moving Car Marker */}
         {carPosition && <Marker position={carPosition} icon={carIcon} />}
