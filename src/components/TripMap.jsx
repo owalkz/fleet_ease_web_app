@@ -20,7 +20,7 @@ L.Icon.Default.mergeOptions({
 
 // 🏎️ Car icon (can be customized to look even cooler)
 const carIcon = new L.Icon({
-  iconUrl: "../../public/car.png",
+  iconUrl: "/car.png",
   iconSize: [32, 32],
   iconAnchor: [16, 16],
 });
