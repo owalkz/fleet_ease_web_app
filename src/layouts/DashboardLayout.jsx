@@ -7,16 +7,17 @@ import {
   FaCog,
   FaSignOutAlt,
 } from "react-icons/fa";
-import { Tooltip } from "react-tooltip"; // Optional, if used elsewhere
 import { useAuth } from "../auth/AuthProvider";
 
 export default function DashboardLayout() {
   const navigate = useNavigate();
   const auth = useAuth();
 
+  const role = auth.role;
+  console.log(auth);
+
   function handleLogout() {
     auth.logout();
-
     navigate("/");
   }
 
@@ -24,32 +25,23 @@ export default function DashboardLayout() {
     <div className="flex h-screen">
       {/* Sidebar */}
       <aside className="w-16 bg-gray-800 text-white flex flex-col items-center py-6 space-y-6">
-        <SidebarIcon to="/dashboard/trips" icon={<FaRoute />} label="Trips" />
-        <SidebarIcon
-          to="/dashboard/vehicles"
-          icon={<FaCar />}
-          label="Vehicles"
-        />
-        <SidebarIcon
-          to="/dashboard/drivers"
-          icon={<FaUserTie />}
-          label="Drivers"
-        />
-        <SidebarIcon
-          to="/dashboard/reports"
-          icon={<FaChartBar />}
-          label="Reports"
-        />
-        <SidebarIcon
-          to="/dashboard/settings"
-          icon={<FaCog />}
-          label="Settings"
-        />
+        {role === "manager" && (
+          <SidebarIcon to="/dashboard/trips" icon={<FaRoute />} label="Trips" />
+        )}
+
+        {/* Reports tab is shown to both roles */}
+        {(role === "manager" || role === "driver") && (
+          <SidebarIcon
+            to="/dashboard/reports"
+            icon={<FaChartBar />}
+            label="Reports"
+          />
+        )}
 
         {/* Spacer */}
         <div className="flex-grow" />
 
-        {/* Logout Button */}
+        {/* Logout */}
         <SidebarButton
           onClick={handleLogout}
           icon={<FaSignOutAlt />}
@@ -65,7 +57,6 @@ export default function DashboardLayout() {
   );
 }
 
-// For navigation links
 function SidebarIcon({ icon, label, to }) {
   return (
     <NavLink
@@ -80,7 +71,6 @@ function SidebarIcon({ icon, label, to }) {
   );
 }
 
-// For logout button
 function SidebarButton({ icon, label, onClick }) {
   return (
     <button
