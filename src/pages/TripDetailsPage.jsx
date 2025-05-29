@@ -9,10 +9,23 @@ const TripDetailsPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let intervalId;
+
     const loadTrip = async () => {
       try {
         const data = await getTripDetails(tripId);
-        setTrip(data);
+        setTrip((prev) => {
+          // If trip was ongoing but is now completed, stop polling
+          if (prev?.status !== "completed" && data.status === "completed") {
+            clearInterval(intervalId);
+          }
+          return data;
+        });
+
+        // Start polling only if the trip is NOT completed
+        if (data.status !== "completed" && !intervalId) {
+          intervalId = setInterval(loadTrip, 5000); // Poll every 10s
+        }
       } catch (err) {
         console.error("Error loading trip details", err);
       } finally {
@@ -20,7 +33,9 @@ const TripDetailsPage = () => {
       }
     };
 
-    loadTrip();
+    loadTrip(); // Initial fetch
+
+    return () => clearInterval(intervalId); // Cleanup
   }, [tripId]);
 
   if (loading) return <div className="p-4">Loading...</div>;

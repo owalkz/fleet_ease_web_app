@@ -1,8 +1,25 @@
-import { NavLink, Outlet } from "react-router-dom";
-import { FaRoute, FaCar, FaUserTie, FaChartBar, FaCog } from "react-icons/fa";
-import { Tooltip } from "react-tooltip";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import {
+  FaRoute,
+  FaCar,
+  FaUserTie,
+  FaChartBar,
+  FaCog,
+  FaSignOutAlt,
+} from "react-icons/fa";
+import { Tooltip } from "react-tooltip"; // Optional, if used elsewhere
+import { useAuth } from "../auth/AuthProvider";
 
 export default function DashboardLayout() {
+  const navigate = useNavigate();
+  const auth = useAuth();
+
+  function handleLogout() {
+    auth.logout();
+
+    navigate("/");
+  }
+
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
@@ -28,6 +45,16 @@ export default function DashboardLayout() {
           icon={<FaCog />}
           label="Settings"
         />
+
+        {/* Spacer */}
+        <div className="flex-grow" />
+
+        {/* Logout Button */}
+        <SidebarButton
+          onClick={handleLogout}
+          icon={<FaSignOutAlt />}
+          label="Logout"
+        />
       </aside>
 
       {/* Main Content */}
@@ -38,6 +65,7 @@ export default function DashboardLayout() {
   );
 }
 
+// For navigation links
 function SidebarIcon({ icon, label, to }) {
   return (
     <NavLink
@@ -49,5 +77,20 @@ function SidebarIcon({ icon, label, to }) {
         {label}
       </span>
     </NavLink>
+  );
+}
+
+// For logout button
+function SidebarButton({ icon, label, onClick }) {
+  return (
+    <button
+      onClick={onClick}
+      className="group relative flex items-center justify-center w-12 h-12 hover:bg-red-600 rounded"
+    >
+      {icon}
+      <span className="absolute left-14 whitespace-nowrap text-sm bg-red-600 text-white px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+        {label}
+      </span>
+    </button>
   );
 }

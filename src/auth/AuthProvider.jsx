@@ -40,7 +40,7 @@ const AuthProvider = ({ children }) => {
       const res = await response.json();
       if (res) {
         setUserName(res.user["name"]);
-        setRole(res.user["role"]);
+        setRole(res.user["accountType"]);
         setToken(res.token);
         localStorage.setItem("token", res.token);
         return response.status;

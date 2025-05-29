@@ -21,7 +21,7 @@ import DashboardLayout from "./layouts/DashboardLayout";
 import TripsPage from "./pages/TripsPage";
 import DriversPage from "./pages/DriversPage";
 import VehiclesPage from "./pages/VehiclesPage";
-import ReportsPage from "./pages/ReportsPage";
+import RoleBasedReportPage from "./pages/RoleBasedReportPage";
 import SettingsPage from "./pages/SettingsPage";
 import TripDetailsPage from "./pages/TripDetailsPage";
 
@@ -46,7 +46,7 @@ const App = () => {
               <Route path="trips" element={<TripsPage />} />
               <Route path="drivers" element={<DriversPage />} />
               <Route path="vehicles" element={<VehiclesPage />} />
-              <Route path="reports" element={<ReportsPage />} />
+              <Route path="reports" element={<RoleBasedReportPage />} />
               <Route path="settings" element={<SettingsPage />} />
               <Route path="trip/:tripId" element={<TripDetailsPage />} />
             </Route>
