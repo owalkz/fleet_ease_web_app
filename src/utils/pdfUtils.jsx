@@ -1,5 +1,6 @@
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import logo from "/fleet_ease_logo.png?url";
 
 const LOGO_WIDTH = 40;
 const LOGO_HEIGHT = 20;
@@ -24,12 +25,13 @@ export const exportFleetOverviewToPDF = (
   overview,
   monthlyStats = [],
   filters = {},
-  logoBase64 = null
+  logoBase64 = null,
+  preview = false
 ) => {
   const doc = new jsPDF();
 
   if (logoBase64) {
-    doc.addImage(logoBase64, "PNG", LOGO_X, LOGO_Y, LOGO_WIDTH, LOGO_HEIGHT);
+    doc.addImage(logo, "PNG", LOGO_X, LOGO_Y, LOGO_WIDTH, LOGO_HEIGHT);
   }
 
   doc.setFontSize(18);
@@ -56,29 +58,32 @@ export const exportFleetOverviewToPDF = (
   if (monthlyStats.length > 0) {
     autoTable(doc, {
       startY: doc.lastAutoTable.finalY + 10,
-      head: [["Month", "Trip Count", "Total Distance", "Average Speed"]],
+      head: [["Month", "Trip Count"]],
       body: monthlyStats.map((stat) => [
-        stat.month,
+        stat._id,
         stat.tripCount,
-        `${stat.totalDistance} km`,
-        `${stat.averageSpeed} km/h`,
       ]),
     });
   }
 
-  doc.save("fleet-overview.pdf");
+  if (preview) {
+    return doc.output("bloburl"); // <== Return blob URL
+  } else {
+    doc.save("fleet-overview.pdf");
+  }
 };
 
 export const exportDriverReportToPDF = (
   driverSummary = [],
   expiringLicenses = [],
   filters = {},
-  logoBase64 = null
+  logoBase64 = null,
+  preview = false
 ) => {
   const doc = new jsPDF();
 
   if (logoBase64) {
-    doc.addImage(logoBase64, "PNG", LOGO_X, LOGO_Y, LOGO_WIDTH, LOGO_HEIGHT);
+    doc.addImage(logo, "PNG", LOGO_X, LOGO_Y, LOGO_WIDTH, LOGO_HEIGHT);
   }
 
   doc.setFontSize(18);
@@ -112,19 +117,24 @@ export const exportDriverReportToPDF = (
     });
   }
 
-  doc.save("driver-report.pdf");
+  if (preview) {
+    return doc.output("bloburl"); // <== Return blob URL
+  } else {
+    doc.save("driver-report.pdf");
+  }
 };
 
 export const exportTripReportToPDF = (
   tripSummary = {},
   harshEvents = [],
   filters = {},
-  logoBase64 = null
+  logoBase64 = null,
+  preview = false
 ) => {
   const doc = new jsPDF();
 
   if (logoBase64) {
-    doc.addImage(logoBase64, "PNG", LOGO_X, LOGO_Y, LOGO_WIDTH, LOGO_HEIGHT);
+    doc.addImage(logo, "PNG", LOGO_X, LOGO_Y, LOGO_WIDTH, LOGO_HEIGHT);
   }
 
   doc.setFontSize(18);
@@ -152,7 +162,11 @@ export const exportTripReportToPDF = (
     });
   }
 
-  doc.save("trip-report.pdf");
+  if (preview) {
+    return doc.output("bloburl"); // <== Return blob URL
+  } else {
+    doc.save("trip-report.pdf");
+  }
 };
 
 export const exportVehicleReportToPDF = (
@@ -161,12 +175,13 @@ export const exportVehicleReportToPDF = (
   insurance = [],
   overdue = [],
   filters = {},
-  logoBase64 = null
+  logoBase64 = null,
+  preview = false
 ) => {
   const doc = new jsPDF();
 
   if (logoBase64) {
-    doc.addImage(logoBase64, "PNG", LOGO_X, LOGO_Y, LOGO_WIDTH, LOGO_HEIGHT);
+    doc.addImage(logo, "PNG", LOGO_X, LOGO_Y, LOGO_WIDTH, LOGO_HEIGHT);
   }
 
   doc.setFontSize(18);
@@ -234,5 +249,9 @@ export const exportVehicleReportToPDF = (
     });
   }
 
-  doc.save("vehicle-report.pdf");
+  if (preview) {
+    return doc.output("bloburl"); // <== Return blob URL
+  } else {
+    doc.save("vahicle-report.pdf");
+  }
 };

@@ -14,7 +14,6 @@ export default function DashboardLayout() {
   const auth = useAuth();
 
   const role = auth.role;
-  console.log(auth);
 
   function handleLogout() {
     auth.logout();

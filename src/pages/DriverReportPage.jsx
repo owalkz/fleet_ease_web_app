@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { fetchDriverPerformanceReport } from "../api/ReportApis";
+import { exportDriverReportToPDF } from "../utils/pdfUtils";
 import DataTable from "../components/DataTable";
+import { useAuth } from "../auth/AuthProvider";
+import PdfPreviewModal from "../components/PdfPreviewModal";
 
 const formatDateTime = (dateStr) => {
   if (!dateStr) return "N/A";
@@ -17,6 +20,9 @@ const formatDateTime = (dateStr) => {
 const DriverReportPage = () => {
   const [report, setReport] = useState(null);
   const [loading, setLoading] = useState(true);
+  const companyLogo = "data:image/png;base64,INSERT_BASE64_STRING_HERE";
+  const [previewUrl, setPreviewUrl] = useState(null);
+  const auth = useAuth();
 
   const loadReport = async () => {
     try {
@@ -32,6 +38,39 @@ const DriverReportPage = () => {
   useEffect(() => {
     loadReport();
   }, []);
+
+  const generateReportDoc = () => {
+    const summary = {
+      name: auth.userName,
+      tripCount: report.tripCount,
+      totalDistance: report.totalDistance,
+      harshEvents: report.harshEvents,
+      avgDistance:
+        report.totalDistance && report.tripCount
+          ? (report.totalDistance / report.tripCount).toFixed(2)
+          : 0,
+    };
+
+    return exportDriverReportToPDF(
+      [summary],
+      [], // No expiring licenses
+      {}, // No filters
+      companyLogo
+    );
+  };
+
+  const previewPDF = () => {
+    const doc = generateReportDoc();
+    const blob = doc.output("blob");
+    const url = URL.createObjectURL(blob);
+    console.log(url);
+    setPreviewUrl(url);
+  };
+
+  const downloadPDF = () => {
+    const doc = generateReportDoc();
+    doc.save("driver-performance-report.pdf");
+  };
 
   if (loading) return <div className="p-4">Loading driver performance...</div>;
   if (!report) return <div className="p-4">No report data available.</div>;
@@ -58,6 +97,26 @@ const DriverReportPage = () => {
           <p className="text-xl font-bold">{report.harshEvents}</p>
         </div>
       </div>
+
+      <div className="mb-6 flex gap-4">
+        <button
+          onClick={previewPDF}
+          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+        >
+          Preview PDF
+        </button>
+        <button
+          onClick={downloadPDF}
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+        >
+          Download PDF
+        </button>
+      </div>
+
+      <PdfPreviewModal
+        pdfUrl={previewUrl}
+        onClose={() => setPreviewUrl(null)}
+      />
 
       <h2 className="text-xl font-bold mb-4">Recent Trips</h2>
       <DataTable
