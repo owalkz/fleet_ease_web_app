@@ -35,7 +35,7 @@ const isWithinRange = (date, startDate, endDate) => {
   return true;
 };
 
-const companyLogo = await getBase64FromImage("/fleet_ease_logo.png");
+const companyLogo = "";
 
 const ReportsPage = () => {
   const [filters, setFilters] = useState({ startDate: null, endDate: null });
